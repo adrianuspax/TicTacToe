@@ -1,0 +1,16 @@
+{
+    "name": "TicTacToe.GamePlay.Main",
+    "rootNamespace": "TicTacToe.GamePlay.Main",
+    "references": [
+        "GUID:a7edd6754ce7aad48b1f9cf3eda7e3e2"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
