@@ -1,10 +1,16 @@
 using System;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace TicTacToe.GamePlay.Block
 {
+    using ASPax.Attributes.Drawer;
+    using ASPax.Attributes.Drawer.SpecialCases;
+    using ASPax.Attributes.Meta;
+    using ASPax.Extensions;
+    using ASPax.Utilities;
     /// <summary>
     /// Tick Tac Toe Block Control Behaviour
     /// </summary>
@@ -35,7 +41,7 @@ namespace TicTacToe.GamePlay.Block
                 odd = 1
             }
 
-            [SerializeField] private int index;
+            public int index;
             [SerializeField] private Input input;
             /// <summary>
             /// Block Data Constructor
@@ -91,11 +97,41 @@ namespace TicTacToe.GamePlay.Block
             /// </summary>
             public Data Data => data;
         }
+        [Header(Header.READONLY, order = 0), HorizontalLine]
+        [Space(-10, order = 1)]
+        [Header(Header.components, order = 2)]
+        [SerializeField, ReadOnly] private Image image;
+        [SerializeField, ReadOnly] private Button button;
+        [SerializeField, ReadOnly] private TextMeshProUGUI tmp;
 
-        [SerializeField] private Image image;
-        [SerializeField] private Button button;
-        [SerializeField] private TextMeshProUGUI tmp;
-        [SerializeField] private Data data;
+        [Header(Header.variables, order = 0)]
+        [SerializeField, ReadOnly] private Data data;
+#if UNITY_EDITOR
+        /// <summary>
+        /// Reset to default values.
+        /// </summary>
+        [Button("Reset", SButtonEnableMode.Editor)]
+        private void Reset()
+        {
+            return;
+        }
+        /// <summary>
+        /// Method that can be called from the context menu in the Inpector for function tests
+        /// </summary>
+        [Button("Set Index", SButtonEnableMode.Editor)]
+        private void SetIndex()
+        {
+            var chars = gameObject.name.Where(char.IsDigit).ToArray();
+            var digits = new string(chars);
+            var isParsable = int.TryParse(digits, out var i);
+
+            if (isParsable)
+                data = new() { index = i };
+        }
+#endif
+        /// <summary>
+        /// Play Handler invoked into <see cref="SetInput"/>
+        /// </summary>
         public static event EventHandler<Args> PlayHandler;
         private static Input _inputted;
         /// <summary>
@@ -103,9 +139,7 @@ namespace TicTacToe.GamePlay.Block
         /// </summary>
         private void Awake()
         {
-            image = GetComponentInChildren<Image>();
-            button = GetComponentInChildren<Button>();
-            tmp = GetComponentInChildren<TextMeshProUGUI>();
+            ComponentsAssignment();
         }
         /// <summary>
         /// Start is called on the frame when a script is enabled just before any of the Update methods are called the first time.
@@ -115,6 +149,16 @@ namespace TicTacToe.GamePlay.Block
             button.onClick.AddListener(SetInput);
             tmp.text = string.Empty;
             _inputted = Input.none;
+        }
+        /// <summary>
+        /// Assignment of components and variables
+        /// </summary>
+        [Button("Components Assignment", SButtonEnableMode.Editor)]
+        private void ComponentsAssignment()
+        {
+            this.GetComponentInChildrenIfNull(ref image);
+            this.GetComponentInChildrenIfNull(ref button);
+            this.GetComponentInChildrenIfNull(ref tmp);
         }
         /// <summary>
         /// Set the player input

@@ -1,5 +1,19 @@
 {
   "dependencies": {
+    "com.adrianuspax.attributes": {
+      "version": "https://github.com/adrianuspax/Attributes.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "6d4777cf871839f0b1c8a93db1865dee6455ba2e"
+    },
+    "com.adrianuspax.extensions": {
+      "version": "https://github.com/adrianuspax/Extensions.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "d1bc0b9de833be8763a826c3917caa3572bdf0f9"
+    },
     "com.unity.2d.animation": {
       "version": "10.1.4",
       "depth": 1,

@@ -1,5 +1,7 @@
 {
   "dependencies": {
+    "com.adrianuspax.attributes": "https://github.com/adrianuspax/Attributes.git",
+    "com.adrianuspax.extensions": "https://github.com/adrianuspax/Extensions.git",
     "com.unity.collab-proxy": "2.7.1",
     "com.unity.device-simulator.devices": "1.0.0",
     "com.unity.feature.2d": "2.0.1",
