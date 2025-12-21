@@ -9,6 +9,7 @@ EditorBuildSettings:
     path: Assets/01_Scenes/GamePlay.unity
     guid: 8c9cfa26abfee488c85f1582747f6a02
   m_configObjects:
+    com.unity.adaptivePerformance.basic.provider_settings: {fileID: 11400000, guid: 27e51a0a4ddd0154cb56693bcc94f5e3, type: 2}
     com.unity.adaptiveperformance.loader_settings: {fileID: 11400000, guid: 553411ea0aeb3a742b0d0da8dbefd845, type: 2}
     com.unity.adaptiveperformance.simulator.provider_settings: {fileID: 11400000, guid: e5f43fd014877314dadfe75cf6369cc3, type: 2}
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}

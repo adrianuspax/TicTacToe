@@ -1,17 +1,17 @@
+using ASPax.Attributes.Drawer;
+using ASPax.Attributes.Drawer.SpecialCases;
+using ASPax.Attributes.Meta;
+using ASPax.Extensions;
+using ASPax.Utilities;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace TicTacToe.GamePlay.Main
 {
-    using ASPax.Attributes.Drawer;
-    using ASPax.Attributes.Drawer.SpecialCases;
-    using ASPax.Attributes.Meta;
-    using ASPax.Extensions;
-    using ASPax.Utilities;
     /// <summary>
     /// Tic Tac Toe GamePlay Control Behaviour
     /// </summary>
-    public class Control : MonoBehaviour
+    public class Control : MonoBehaviour, Common.IAttributable
     {
         [Header(Header.READONLY, order = 0), HorizontalLine]
         [Space(-10, order = 1)]
@@ -19,6 +19,7 @@ namespace TicTacToe.GamePlay.Main
         [SerializeField, ReadOnly] private GridLayoutGroup gridLayoutGroup;
 
         [Header(Header.scripts, order = 0)]
+        [SerializeField, ReadOnly] private TicTacToeAI ai;
         [SerializeField, NonReorderable, ReadOnly] private Block.Control[] blocks;
         [SerializeField, NonReorderable, ReadOnly] private Block.Control.Data[] data;
         /// <summary>
@@ -46,8 +47,10 @@ namespace TicTacToe.GamePlay.Main
         /// Assignment of components and variables
         /// </summary>
         [Button("Components Assignment")]
-        private void ComponentsAssignment()
+        public void ComponentsAssignment()
         {
+            this.GetComponentIfNull(ref ai);
+
             if (blocks.IsNullOrEmpty() || data.Length == 0 || data == null)
             {
                 gridLayoutGroup = GetComponentInChildren<GridLayoutGroup>();
@@ -80,6 +83,7 @@ namespace TicTacToe.GamePlay.Main
         public void OnPlayable(object sender, Block.Control.Args e)
         {
             data[e.Data.Index] = e.Data;
+            //ai.GetBestMove(data[e.Data.Index].Input.ToString());
         }
         /// <summary>
         /// Return all blocks

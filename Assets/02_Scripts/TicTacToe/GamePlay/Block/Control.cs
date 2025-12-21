@@ -14,7 +14,7 @@ namespace TicTacToe.GamePlay.Block
     /// <summary>
     /// Tick Tac Toe Block Control Behaviour
     /// </summary>
-    public class Control : MonoBehaviour
+    public class Control : MonoBehaviour, Common.IAttributable
     {
         /// <summary>
         /// Player input Enum
@@ -41,8 +41,8 @@ namespace TicTacToe.GamePlay.Block
                 odd = 1
             }
 
-            public int index;
-            [SerializeField] private Input input;
+            [SerializeField, ReadOnly] private int index;
+            [SerializeField, ReadOnly] private Input input;
             /// <summary>
             /// Block Data Constructor
             /// </summary>
@@ -67,11 +67,17 @@ namespace TicTacToe.GamePlay.Block
             /// <summary>
             /// Return the index of the block
             /// </summary>
-            public readonly int Index => index;
+            public int Index
+            {
+                readonly get => index; set => index = value;
+            }
             /// <summary>
             /// Return the player input of the block
             /// </summary>
-            public readonly Input Input => input;
+            public Input Input
+            {
+                readonly get => input; set => input = value;
+            }
             /// <summary>
             /// return if the block is already inputted
             /// </summary>
@@ -113,7 +119,7 @@ namespace TicTacToe.GamePlay.Block
         [Button("Reset", SButtonEnableMode.Editor)]
         private void Reset()
         {
-            return;
+            SetIndex();
         }
         /// <summary>
         /// Method that can be called from the context menu in the Inpector for function tests
@@ -125,8 +131,7 @@ namespace TicTacToe.GamePlay.Block
             var digits = new string(chars);
             var isParsable = int.TryParse(digits, out var i);
 
-            if (isParsable)
-                data = new() { index = i };
+            if (isParsable) data = new() { Index = i };
         }
 #endif
         /// <summary>
@@ -154,7 +159,7 @@ namespace TicTacToe.GamePlay.Block
         /// Assignment of components and variables
         /// </summary>
         [Button("Components Assignment", SButtonEnableMode.Editor)]
-        private void ComponentsAssignment()
+        public void ComponentsAssignment()
         {
             this.GetComponentInChildrenIfNull(ref image);
             this.GetComponentInChildrenIfNull(ref button);
@@ -165,13 +170,13 @@ namespace TicTacToe.GamePlay.Block
         /// </summary>
         public void SetInput()
         {
-            if (data.IsInput)
-                return;
+            if (data.IsInput) return;
 
             _inputted = _updateInputted();
             tmp.text = _getText();
             data = new(data.Index, _inputted);
-            PlayHandler?.Invoke(this, new Args(data));
+            var e = new Args(data);
+            PlayHandler?.Invoke(this, e);
             return;
 
             Input _updateInputted()
