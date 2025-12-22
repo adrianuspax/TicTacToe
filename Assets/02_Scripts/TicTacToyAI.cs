@@ -5,29 +5,28 @@ public class TicTacToeAI : MonoBehaviour
     // Representação dos jogadores
     private const string PLAYER = "x";
     private const string AI = "o";
-    private const string EMPTY = "";
+    private readonly string none = TicTacToe.GamePlay.Block.Control.Input.none.ToString();
 
     // Função principal que você chama do seu script de controle do jogo
     // Recebe o estado atual do tabuleiro (array de 9 strings)
     public int GetBestMove(string[] board)
     {
-        int bestScore = int.MinValue;
-        int move = -1;
+        var bestScore = int.MinValue;
+        var move = -1;
 
         // Itera por todas as células para encontrar a melhor jogada inicial
-        for (int i = 0; i < board.Length; i++)
+        for (var i = 0; i < board.Length; i++)
         {
             // Verifica se a célula está disponível
-            if (board[i] == EMPTY)
+            if (board[i] == none)
             {
                 // Faz a jogada hipotética
                 board[i] = AI;
 
                 // Chama o Minimax para ver o resultado dessa jogada
-                int score = Minimax(board, 0, false);
-
+                var score = Minimax(board, 0, false);
                 // Desfaz a jogada (backtracking) para limpar o tabuleiro para a próxima iteração
-                board[i] = EMPTY;
+                board[i] = none;
 
                 // Se o resultado for melhor que o anterior, guardamos este movimento
                 if (score > bestScore)
@@ -60,11 +59,11 @@ public class TicTacToeAI : MonoBehaviour
             int bestScore = int.MinValue;
             for (int i = 0; i < board.Length; i++)
             {
-                if (board[i] == EMPTY)
+                if (board[i] == none)
                 {
                     board[i] = AI;
                     int score = Minimax(board, depth + 1, false);
-                    board[i] = EMPTY;
+                    board[i] = none;
                     bestScore = Mathf.Max(score, bestScore);
                 }
             }
@@ -76,11 +75,11 @@ public class TicTacToeAI : MonoBehaviour
             int bestScore = int.MaxValue;
             for (int i = 0; i < board.Length; i++)
             {
-                if (board[i] == EMPTY)
+                if (board[i] == none)
                 {
                     board[i] = PLAYER;
                     int score = Minimax(board, depth + 1, true);
-                    board[i] = EMPTY;
+                    board[i] = none;
                     bestScore = Mathf.Min(score, bestScore);
                 }
             }
@@ -105,7 +104,7 @@ public class TicTacToeAI : MonoBehaviour
             int b = winningLines[i, 1];
             int c = winningLines[i, 2];
 
-            if (board[a] != EMPTY && board[a] == board[b] && board[b] == board[c])
+            if (board[a] != none && board[a] == board[b] && board[b] == board[c])
             {
                 return board[a]; // Retorna "X" ou "O"
             }
@@ -116,7 +115,7 @@ public class TicTacToeAI : MonoBehaviour
 
         foreach (string s in board)
         {
-            if (s == EMPTY)
+            if (s == none)
             {
                 isFull = false;
                 break;

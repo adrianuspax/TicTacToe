@@ -1,16 +1,17 @@
+using ASPax.Attributes.Drawer;
+using ASPax.Attributes.Drawer.SpecialCases;
+using ASPax.Attributes.Meta;
+using ASPax.Extensions;
+using ASPax.Utilities;
 using System;
-using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-
+#if UNITY_EDITOR
+using System.Linq;
+#endif
 namespace TicTacToe.GamePlay.Block
 {
-    using ASPax.Attributes.Drawer;
-    using ASPax.Attributes.Drawer.SpecialCases;
-    using ASPax.Attributes.Meta;
-    using ASPax.Extensions;
-    using ASPax.Utilities;
     /// <summary>
     /// Tick Tac Toe Block Control Behaviour
     /// </summary>
@@ -81,7 +82,7 @@ namespace TicTacToe.GamePlay.Block
             /// <summary>
             /// return if the block is already inputted
             /// </summary>
-            public readonly bool IsInput => ((int)input) > 0;
+            public readonly bool IsInputted => ((int)input) > 0;
         }
         /// <summary>
         /// Arguments for Play Handler
@@ -151,9 +152,9 @@ namespace TicTacToe.GamePlay.Block
         /// </summary>
         private void Start()
         {
-            button.onClick.AddListener(SetInput);
             tmp.text = string.Empty;
             _inputted = Input.none;
+            button.onClick.AddListener(SetInput);
         }
         /// <summary>
         /// Assignment of components and variables
@@ -170,7 +171,7 @@ namespace TicTacToe.GamePlay.Block
         /// </summary>
         public void SetInput()
         {
-            if (data.IsInput) return;
+            if (data.IsInputted) return;
 
             _inputted = _updateInputted();
             tmp.text = _getText();

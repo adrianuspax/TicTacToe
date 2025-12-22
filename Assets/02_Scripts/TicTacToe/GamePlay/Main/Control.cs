@@ -3,6 +3,8 @@ using ASPax.Attributes.Drawer.SpecialCases;
 using ASPax.Attributes.Meta;
 using ASPax.Extensions;
 using ASPax.Utilities;
+using System.Collections;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,7 +17,10 @@ namespace TicTacToe.GamePlay.Main
     {
         [Header(Header.READONLY, order = 0), HorizontalLine]
         [Space(-10, order = 1)]
-        [Header(Header.components, order = 2)]
+        [Header(Header.variables, order = 2)]
+        [SerializeField, NonReorderable, ReadOnly] private string[] board;
+        [Space(-10, order = 0)]
+        [Header(Header.components, order = 1)]
         [SerializeField, ReadOnly] private GridLayoutGroup gridLayoutGroup;
 
         [Header(Header.scripts, order = 0)]
@@ -28,6 +33,14 @@ namespace TicTacToe.GamePlay.Main
         private void Awake()
         {
             ComponentsAssignment();
+        }
+        ///<inheritdoc/>
+        private IEnumerator Start()
+        {
+            int value = Random.Range(0, 9);
+            if (value == 4) value = 0;
+            yield return new WaitForSeconds(2f); //????????????????????????
+            blocks[value].SetInput();
         }
         /// <summary>
         /// This function is called when the object becomes enabled and active.
@@ -83,7 +96,20 @@ namespace TicTacToe.GamePlay.Main
         public void OnPlayable(object sender, Block.Control.Args e)
         {
             data[e.Data.Index] = e.Data;
-            //ai.GetBestMove(data[e.Data.Index].Input.ToString());
+
+            if (e.Data.Input == Block.Control.Input.x) return;
+
+            AITurn();
+        }
+
+        private void AITurn()
+        {
+            board = data.Select(s => s.Input.ToString()).ToArray();
+            var bestSlotIndex = ai.GetBestMove(board);
+            print(bestSlotIndex);
+            if (bestSlotIndex == -1) return;
+
+            blocks[bestSlotIndex].SetInput();
         }
         /// <summary>
         /// Return all blocks
