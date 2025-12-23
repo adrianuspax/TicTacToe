@@ -1,4 +1,4 @@
-namespace Common
+namespace TicTacToe.Common
 {
     public interface IAttributable
     {

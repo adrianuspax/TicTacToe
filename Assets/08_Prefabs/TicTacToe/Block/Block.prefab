@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7513765534843123163}
   - component: {fileID: 9113980186626064706}
   m_Layer: 5
-  m_Name: Block0
+  m_Name: Block
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -66,7 +66,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4601059842993114871, guid: 80c9dc105b3116544b00957741d3f495, type: 3}
       propertyPath: m_Name
-      value: btnBlock0
+      value: btnBlock
       objectReference: {fileID: 0}
     - target: {fileID: 4999501649676635778, guid: 80c9dc105b3116544b00957741d3f495, type: 3}
       propertyPath: m_Pivot.x
@@ -270,7 +270,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6748518152824518914, guid: 907530c3dc2c9d44388540d88a17570a, type: 3}
       propertyPath: m_Name
-      value: tmpBlock0
+      value: tmpBlock
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

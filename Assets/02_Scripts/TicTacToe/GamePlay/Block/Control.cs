@@ -7,103 +7,14 @@ using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-#if UNITY_EDITOR
-using System.Linq;
-#endif
+
 namespace TicTacToe.GamePlay.Block
 {
     /// <summary>
     /// Tick Tac Toe Block Control Behaviour
     /// </summary>
-    public class Control : MonoBehaviour, Common.IAttributable
+    public partial class Control : MonoBehaviour, Common.IAttributable
     {
-        /// <summary>
-        /// Player input Enum
-        /// </summary>
-        public enum Input
-        {
-            none = 0,
-            x = 1,
-            o = 2
-        }
-        /// <summary>
-        /// Block Data Struct
-        /// </summary>
-        [Serializable]
-        public struct Data
-        {
-            /// <summary>
-            /// Even or Odd Enum
-            /// </summary>
-            public enum EvenOrOdd
-            {
-                unknown = -1,
-                even = 0,
-                odd = 1
-            }
-
-            [SerializeField, ReadOnly] private int index;
-            [SerializeField, ReadOnly] private Input input;
-            /// <summary>
-            /// Block Data Constructor
-            /// </summary>
-            /// <param name="index">Index of block from Tic Tac Toe</param>
-            /// <param name="input">Current Player Inputed in the block</param>
-            public Data(int index, Input input)
-            {
-                if (index < 0 || index > 8)
-                    index = -1;
-
-                this.index = index;
-                this.input = input;
-            }
-            /// <summary>
-            /// Get Even or Odd
-            /// </summary>
-            public readonly EvenOrOdd GetEvenOrOdd() => (EvenOrOdd)(index % 2);
-            /// <summary>
-            /// Check if the block index is Zero
-            /// </summary>
-            public readonly bool IsZero() => index == 0;
-            /// <summary>
-            /// Return the index of the block
-            /// </summary>
-            public int Index
-            {
-                readonly get => index; set => index = value;
-            }
-            /// <summary>
-            /// Return the player input of the block
-            /// </summary>
-            public Input Input
-            {
-                readonly get => input; set => input = value;
-            }
-            /// <summary>
-            /// return if the block is already inputted
-            /// </summary>
-            public readonly bool IsInputted => ((int)input) > 0;
-        }
-        /// <summary>
-        /// Arguments for Play Handler
-        /// </summary>
-        [Serializable]
-        public class Args : EventArgs
-        {
-            [SerializeField] private Data data;
-            /// <summary>
-            /// Arguments Constructor
-            /// </summary>
-            /// <param name="data"></param>
-            public Args(Data data)
-            {
-                this.data = data;
-            }
-            /// <summary>
-            /// Return the data of the block
-            /// </summary>
-            public Data Data => data;
-        }
         [Header(Header.READONLY, order = 0), HorizontalLine]
         [Space(-10, order = 1)]
         [Header(Header.components, order = 2)]
@@ -113,33 +24,23 @@ namespace TicTacToe.GamePlay.Block
 
         [Header(Header.variables, order = 0)]
         [SerializeField, ReadOnly] private Data data;
-#if UNITY_EDITOR
-        /// <summary>
-        /// Reset to default values.
-        /// </summary>
-        [Button("Reset", SButtonEnableMode.Editor)]
-        private void Reset()
-        {
-            SetIndex();
-        }
         /// <summary>
         /// Method that can be called from the context menu in the Inpector for function tests
         /// </summary>
-        [Button("Set Index", SButtonEnableMode.Editor)]
+        [Button(nameof(SetIndex), SButtonEnableMode.Editor)]
         private void SetIndex()
         {
-            var chars = gameObject.name.Where(char.IsDigit).ToArray();
-            var digits = new string(chars);
-            var isParsable = int.TryParse(digits, out var i);
-
-            if (isParsable) data = new() { Index = i };
-        }
+            var index = transform.GetSiblingIndex();
+            data = new() { Index = index };
+#if UNITY_EDITOR
+            tmp.text = $"{index}";
 #endif
+        }
         /// <summary>
         /// Play Handler invoked into <see cref="SetInput"/>
         /// </summary>
         public static event EventHandler<Args> PlayHandler;
-        private static Input _inputted;
+        private static Input _lastInput;
         /// <summary>
         /// Awake is called when an enabled script instance is being loaded.
         /// </summary>
@@ -152,14 +53,15 @@ namespace TicTacToe.GamePlay.Block
         /// </summary>
         private void Start()
         {
+            SetIndex();
             tmp.text = string.Empty;
-            _inputted = Input.none;
+            _lastInput = Input.blank;
             button.onClick.AddListener(SetInput);
         }
         /// <summary>
         /// Assignment of components and variables
         /// </summary>
-        [Button("Components Assignment", SButtonEnableMode.Editor)]
+        [Button(nameof(ComponentsAssignment), SButtonEnableMode.Editor)]
         public void ComponentsAssignment()
         {
             this.GetComponentInChildrenIfNull(ref image);
@@ -171,18 +73,19 @@ namespace TicTacToe.GamePlay.Block
         /// </summary>
         public void SetInput()
         {
-            if (data.IsInputted) return;
+            if (data.IsInputted)
+                return;
 
-            _inputted = _updateInputted();
+            _lastInput = _updateInputted();
             tmp.text = _getText();
-            data = new(data.Index, _inputted);
+            data = new(data.Index, _lastInput);
             var e = new Args(data);
             PlayHandler?.Invoke(this, e);
             return;
 
             Input _updateInputted()
             {
-                return _inputted switch
+                return _lastInput switch
                 {
                     Input.x => Input.o,
                     Input.o => Input.x,
@@ -192,18 +95,18 @@ namespace TicTacToe.GamePlay.Block
 
             string _getText()
             {
-                return _inputted switch
+                return _lastInput switch
                 {
-                    Input.x => "X",
-                    Input.o => "O",
-                    _ => "?",
+                    Input.x => "x",
+                    Input.o => "o",
+                    _ => "blank",
                 };
             }
         }
         /// <summary>
         /// Get the block data
         /// </summary>
-        public Data GetData() => data;
+        public Data Data => data;
         /// <summary>
         /// Return the index of the block
         /// </summary>

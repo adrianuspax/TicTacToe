@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4999501649676635778}
   - component: {fileID: 7258947245943394457}
   m_Layer: 5
-  m_Name: btnBlock0
+  m_Name: btnBlock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -91,7 +91,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3860727031472858543, guid: 3ad109ac7d55d9149a3361ae7cf01805, type: 3}
       propertyPath: m_Name
-      value: imgBlock0
+      value: imgBlock
       objectReference: {fileID: 0}
     - target: {fileID: 8410828823970146120, guid: 3ad109ac7d55d9149a3361ae7cf01805, type: 3}
       propertyPath: m_Pivot.x

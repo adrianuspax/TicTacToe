@@ -3,30 +3,39 @@ using ASPax.Attributes.Drawer.SpecialCases;
 using ASPax.Attributes.Meta;
 using ASPax.Extensions;
 using ASPax.Utilities;
-using System.Collections;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace TicTacToe.GamePlay.Main
 {
+    public enum Result
+    {
+        draw = -1,
+        none = 0,
+        youLose = 1,
+        youWin = 2
+    }
     /// <summary>
     /// Tic Tac Toe GamePlay Control Behaviour
     /// </summary>
     public class Control : MonoBehaviour, Common.IAttributable
     {
+        [Header(Header.MANAGEABLE, order = 0), HorizontalLine]
+        [Space(-10, order = 1)]
+        [Header(Header.variables, order = 2)]
+        [SerializeField] private Block.Input player;
         [Header(Header.READONLY, order = 0), HorizontalLine]
         [Space(-10, order = 1)]
         [Header(Header.variables, order = 2)]
-        [SerializeField, NonReorderable, ReadOnly] private string[] board;
-        [Space(-10, order = 0)]
-        [Header(Header.components, order = 1)]
+        [SerializeField, ReadOnly] private Result result;
+        [Space(-10, order = 1)]
+        [Header(Header.components, order = 2)]
         [SerializeField, ReadOnly] private GridLayoutGroup gridLayoutGroup;
 
         [Header(Header.scripts, order = 0)]
-        [SerializeField, ReadOnly] private TicTacToeAI ai;
+        [SerializeField, ReadOnly] private AI ai;
         [SerializeField, NonReorderable, ReadOnly] private Block.Control[] blocks;
-        [SerializeField, NonReorderable, ReadOnly] private Block.Control.Data[] data;
+        [SerializeField, NonReorderable, ReadOnly] private Block.Data[] data;
         /// <summary>
         /// Awake is called when an enabled script instance is being loaded.
         /// </summary>
@@ -35,42 +44,51 @@ namespace TicTacToe.GamePlay.Main
             ComponentsAssignment();
         }
         ///<inheritdoc/>
-        private IEnumerator Start()
-        {
-            int value = Random.Range(0, 9);
-            if (value == 4) value = 0;
-            yield return new WaitForSeconds(2f); //????????????????????????
-            blocks[value].SetInput();
-        }
-        /// <summary>
-        /// This function is called when the object becomes enabled and active.
-        /// </summary>
         private void OnEnable()
         {
             Block.Control.PlayHandler += OnPlayable;
         }
-        /// <summary>
-        /// This function is called when the behaviour becomes disabled.
-        /// </summary>
+        ///<inheritdoc/>
         private void OnDisable()
         {
             Block.Control.PlayHandler -= OnPlayable;
         }
+        ///<inheritdoc/>
+        private void Start()
+        {
+            result = Result.none;
+
+            if (player == Block.Input.blank)
+            {
+                player = Block.Input.x;
+                Debug.LogWarning("Player cannot be blank! Player will be X!");
+            }
+
+            ai = new(player);
+
+            if (player == Block.Input.o)
+            {
+                int value = Random.Range(0, 9);
+                if (value == 4)
+                    value = 0;
+
+                blocks[value].SetInput();
+            }
+
+        }
         /// <summary>
         /// Assignment of components and variables
         /// </summary>
-        [Button("Components Assignment")]
+        [Button(nameof(ComponentsAssignment), SButtonEnableMode.Editor)]
         public void ComponentsAssignment()
         {
-            this.GetComponentIfNull(ref ai);
-
             if (blocks.IsNullOrEmpty() || data.Length == 0 || data == null)
             {
                 gridLayoutGroup = GetComponentInChildren<GridLayoutGroup>();
 
                 var transform = gridLayoutGroup.transform;
                 blocks = new Block.Control[transform.childCount];
-                data = new Block.Control.Data[blocks.Length];
+                data = new Block.Data[blocks.Length];
 
                 for (var i = 0; i < blocks.Length; i++)
                 {
@@ -83,7 +101,7 @@ namespace TicTacToe.GamePlay.Main
                     }
 
                     blocks[block.Index] = block;
-                    data[block.Index] = block.GetData();
+                    data[block.Index] = block.Data;
                 }
             }
         }
@@ -93,28 +111,27 @@ namespace TicTacToe.GamePlay.Main
         /// <param name="sender">Sender Object<br/>Must receive <see cref="Block.Control"/> as object</param>
         /// <param name="e">Arguments to Handler</param>
         /// <remarks>Default arguments when using <see cref="System.EventHandler"/></remarks>
-        public void OnPlayable(object sender, Block.Control.Args e)
+        public void OnPlayable(object sender, Block.Args e)
         {
             data[e.Data.Index] = e.Data;
 
-            if (e.Data.Input == Block.Control.Input.x) return;
+            if (e.Data.Input == player)
+            {
+                var bestSlotIndex = ai.GetBestMove(data);
+                if (bestSlotIndex == -1)
+                {
+                    result = Result.draw;
+                    return;
+                }
 
-            AITurn();
-        }
-
-        private void AITurn()
-        {
-            board = data.Select(s => s.Input.ToString()).ToArray();
-            var bestSlotIndex = ai.GetBestMove(board);
-            print(bestSlotIndex);
-            if (bestSlotIndex == -1) return;
-
-            blocks[bestSlotIndex].SetInput();
+                blocks[bestSlotIndex].SetInput();
+            }
         }
         /// <summary>
         /// Return all blocks
         /// </summary>
         /// <remarks>Read only</remarks>
         public Block.Control[] Blocks => blocks;
+        public Block.Input Player => player;
     }
 }
