@@ -54,9 +54,9 @@ namespace TicTacToe.GamePlay.Block
         private void Start()
         {
             SetIndex();
+            button.onClick.AddListener(SetInput);
             tmp.text = string.Empty;
             _lastInput = Input.blank;
-            button.onClick.AddListener(SetInput);
         }
         /// <summary>
         /// Assignment of components and variables

@@ -3,6 +3,7 @@ using ASPax.Attributes.Drawer.SpecialCases;
 using ASPax.Attributes.Meta;
 using ASPax.Extensions;
 using ASPax.Utilities;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -67,14 +68,7 @@ namespace TicTacToe.GamePlay.Main
             ai = new(player);
 
             if (player == Block.Input.o)
-            {
-                int value = Random.Range(0, 9);
-                if (value == 4)
-                    value = 0;
-
-                blocks[value].SetInput();
-            }
-
+                AIInput();
         }
         /// <summary>
         /// Assignment of components and variables
@@ -114,18 +108,32 @@ namespace TicTacToe.GamePlay.Main
         public void OnPlayable(object sender, Block.Args e)
         {
             data[e.Data.Index] = e.Data;
-
             if (e.Data.Input == player)
-            {
-                var bestSlotIndex = ai.GetBestMove(data);
-                if (bestSlotIndex == -1)
-                {
-                    result = Result.draw;
-                    return;
-                }
+                AIInput();
+        }
 
-                blocks[bestSlotIndex].SetInput();
+        public void AIInput(float delay = 0f)
+        {
+            if (delay < 0f)
+                delay = 0f;
+
+            var routine = AIInput(data, delay);
+            StartCoroutine(routine);
+        }
+
+        public IEnumerator AIInput(Block.Data[] board, float delay)
+        {
+            if (delay <= 0f) yield return new WaitForEndOfFrame();
+            else yield return new WaitForSeconds(delay);
+
+            var bestSlotIndex = ai.GetBestMove(board);
+            if (bestSlotIndex == -1)
+            {
+                result = Result.draw;
+                yield break;
             }
+
+            blocks[bestSlotIndex].SetInput();
         }
         /// <summary>
         /// Return all blocks
