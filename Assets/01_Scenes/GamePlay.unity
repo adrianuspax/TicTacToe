@@ -242,7 +242,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 877c2e5859dac2b4c8582b727fb2ebea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: 1
+  player: 2
   result: 0
   gridLayoutGroup: {fileID: 7185751998060659067}
   ai:
