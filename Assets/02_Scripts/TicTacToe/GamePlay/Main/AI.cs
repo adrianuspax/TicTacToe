@@ -1,8 +1,11 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace TicTacToe.GamePlay.Main
 {
+    using Random = UnityEngine.Random;
+
     [Serializable]
     public class AI
     {
@@ -61,7 +64,7 @@ namespace TicTacToe.GamePlay.Main
         public int GetBestMove(Block.Data[] board)
         {
             var bestScore = int.MinValue;
-            var moveIndex = -1;
+            var bestMoves = new List<int>();
 
             for (var i = 0; i < board.Length; i++)
             {
@@ -74,14 +77,24 @@ namespace TicTacToe.GamePlay.Main
                     if (score > bestScore)
                     {
                         bestScore = score;
-                        moveIndex = i;
+                        bestMoves.Clear();
+                        bestMoves.Add(i);
+                    }
+                    else if (score == bestScore)
+                    {
+                        bestMoves.Add(i);
                     }
                 }
             }
 
-            return moveIndex;
+            var move = -1;
+            if (bestMoves.Count > 0)
+            {
+                var randomIndex = Random.Range(0, bestMoves.Count); //new System.Random().Next(bestMoves.Count);
+                move = bestMoves[randomIndex];
+            }
+            return move;
         }
-
 
         private int Minimax(Block.Data[] board, int depth, bool isMaximizing)
         {
