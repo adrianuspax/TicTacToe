@@ -41,16 +41,12 @@ namespace TicTacToe.GamePlay.Block
         /// </summary>
         public static event EventHandler<Args> PlayHandler;
         private static Input _lastInput;
-        /// <summary>
-        /// Awake is called when an enabled script instance is being loaded.
-        /// </summary>
+        /// <inheritdoc/>
         private void Awake()
         {
             ComponentsAssignment();
         }
-        /// <summary>
-        /// Start is called on the frame when a script is enabled just before any of the Update methods are called the first time.
-        /// </summary>
+        /// <inheritdoc/>
         private void Start()
         {
             SetIndex();
@@ -58,9 +54,7 @@ namespace TicTacToe.GamePlay.Block
             tmp.text = string.Empty;
             _lastInput = Input.blank;
         }
-        /// <summary>
-        /// Assignment of components and variables
-        /// </summary>
+        /// <inheritdoc/>
         [Button(nameof(ComponentsAssignment), SButtonEnableMode.Editor)]
         public void ComponentsAssignment()
         {
@@ -82,7 +76,7 @@ namespace TicTacToe.GamePlay.Block
             var e = new Args(data);
             PlayHandler?.Invoke(this, e);
             return;
-
+            // Update the last input
             Input _updateInputted()
             {
                 return _lastInput switch
@@ -92,7 +86,7 @@ namespace TicTacToe.GamePlay.Block
                     _ => Input.x,
                 };
             }
-
+            // Get the text representation of the input
             string _getText()
             {
                 return _lastInput switch

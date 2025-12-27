@@ -9,13 +9,6 @@ using UnityEngine.UI;
 
 namespace TicTacToe.GamePlay.Main
 {
-    public enum Result
-    {
-        draw = -1,
-        none = 0,
-        youLose = 1,
-        youWin = 2
-    }
     /// <summary>
     /// Tic Tac Toe GamePlay Control Behaviour
     /// </summary>
@@ -29,8 +22,8 @@ namespace TicTacToe.GamePlay.Main
         [Space(-10, order = 1)]
         [Header(Header.variables, order = 2)]
         [SerializeField, ReadOnly] private Result result;
-        [Space(-10, order = 1)]
-        [Header(Header.components, order = 2)]
+        [Space(-10, order = 0)]
+        [Header(Header.components, order = 1)]
         [SerializeField, ReadOnly] private GridLayoutGroup gridLayoutGroup;
 
         [Header(Header.scripts, order = 0)]
@@ -108,6 +101,15 @@ namespace TicTacToe.GamePlay.Main
         public void OnPlayable(object sender, Block.Args e)
         {
             data[e.Data.Index] = e.Data;
+
+            result = ai.CheckForWinner(data);
+            if (result != Result.none)
+            {
+                Debug.Log($"Game is over! Result: {result}");
+                // TODO: Implement game over screen or logic
+                return;
+            }
+
             if (e.Data.Input == player)
                 AIInput();
         }
@@ -129,7 +131,9 @@ namespace TicTacToe.GamePlay.Main
             var bestSlotIndex = ai.GetBestMove(board);
             if (bestSlotIndex == -1)
             {
-                result = Result.draw;
+                // This condition is a safeguard. With the new logic in OnPlayable,
+                // a draw should be detected on the player's last move, and this coroutine
+                // would not have been called.
                 yield break;
             }
 
@@ -141,5 +145,6 @@ namespace TicTacToe.GamePlay.Main
         /// <remarks>Read only</remarks>
         public Block.Control[] Blocks => blocks;
         public Block.Input Player => player;
+        public Result Result => result;
     }
 }

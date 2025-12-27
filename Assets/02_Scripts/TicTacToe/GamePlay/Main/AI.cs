@@ -26,7 +26,6 @@ namespace TicTacToe.GamePlay.Main
 
         [SerializeField] private Block.Input human;
         [SerializeField] private Block.Input ai;
-        [SerializeField] private Result result;
 
         private readonly int[,] winConditions = new int[,]
         {
@@ -34,6 +33,30 @@ namespace TicTacToe.GamePlay.Main
             {0, 3, 6}, {1, 4, 7}, {2, 5, 8}, // Columns
             {0, 4, 8}, {2, 4, 6}             // Diags
         };
+
+        public Result CheckForWinner(Block.Data[] board)
+        {
+            var length = winConditions.GetLength(0);
+
+            for (var i = 0; i < length; i++)
+            {
+                var a = winConditions[i, 0];
+                var b = winConditions[i, 1];
+                var c = winConditions[i, 2];
+
+                if (board[a].Input != Block.Input.blank && board[a].Input == board[b].Input && board[b].Input == board[c].Input)
+                    if (board[a].Input == ai)
+                        return Result.youLose;
+                    else
+                        return Result.youWin;
+            }
+
+            var isMovesLeft = IsMovesLeft(board);
+            if (isMovesLeft)
+                return Result.none;
+            else
+                return Result.draw;
+        }
 
         public int GetBestMove(Block.Data[] board)
         {

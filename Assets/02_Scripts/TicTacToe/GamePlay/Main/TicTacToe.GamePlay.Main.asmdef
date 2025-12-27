@@ -1,14 +1,15 @@
 {
-    "name": "TicTacToe.GamePlay.Block",
-    "rootNamespace": "TicTacToe.GamePlay.Block",
+    "name": "TicTacToe.GamePlay.Main",
+    "rootNamespace": "TicTacToe.GamePlay.Main",
     "references": [
-        "GUID:6055be8ebefd69e48b49212b09b47b2f",
+        "GUID:a7edd6754ce7aad48b1f9cf3eda7e3e2",
         "GUID:96d56e891fd912540a8a1cc45a9b975c",
         "GUID:f41b18d51617ea8429d62d6655b5dc30",
         "GUID:776d03a35f1b52c4a9aed9f56d7b4229",
         "GUID:ffd3792f84cbf8a4e89eec7802c4c6c4",
         "GUID:2591a98a6b532a94ab3f838e90c1851c",
-        "GUID:582d49668d27a2a4593f83caab3f7b6e"
+        "GUID:083c447c05ddd8c4aa9f192111611af0",
+        "GUID:6771d669e2dc5584496e9b1094a1fb34"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

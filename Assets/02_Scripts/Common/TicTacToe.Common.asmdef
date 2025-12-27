@@ -1,6 +1,6 @@
 {
-    "name": "Common",
-    "rootNamespace": "Common",
+    "name": "TicTacToe.Common",
+    "rootNamespace": "TicTacToe.Common",
     "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],
