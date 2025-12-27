@@ -9,7 +9,7 @@ namespace TicTacToe.GamePlay.Block
     [Serializable]
     public class Args : EventArgs
     {
-        [SerializeField] private Data data;
+        [SerializeField] private Data data; // The data associated with the block involved in the event.
         /// <summary>
         /// Arguments Constructor
         /// </summary>

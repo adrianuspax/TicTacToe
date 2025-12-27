@@ -21,33 +21,31 @@ namespace TicTacToe.GamePlay.Main
         [Header(Header.READONLY, order = 0), HorizontalLine]
         [Space(-10, order = 1)]
         [Header(Header.variables, order = 2)]
-        [SerializeField, ReadOnly] private Result result;
+        [SerializeField, ReadOnly] private Result result; // The result of the game.
         [Space(-10, order = 0)]
         [Header(Header.components, order = 1)]
-        [SerializeField, ReadOnly] private GridLayoutGroup gridLayoutGroup;
+        [SerializeField, ReadOnly] private GridLayoutGroup gridLayoutGroup; // The grid layout group for the Tic-Tac-Toe board.
 
         [Header(Header.scripts, order = 0)]
-        [SerializeField, ReadOnly] private AI ai;
-        [SerializeField, NonReorderable, ReadOnly] private Block.Control[] blocks;
-        [SerializeField, NonReorderable, ReadOnly] private Block.Data[] data;
-        /// <summary>
-        /// Awake is called when an enabled script instance is being loaded.
-        /// </summary>
+        [SerializeField, ReadOnly] private AI ai; // The AI instance for the game.
+        [SerializeField, NonReorderable, ReadOnly] private Block.Control[] blocks; // An array of block controls representing the cells of the board.
+        [SerializeField, NonReorderable, ReadOnly] private Block.Data[] data; // An array of block data representing the state of the board.
+        /// <inheritdoc/>
         private void Awake()
         {
             ComponentsAssignment();
         }
-        ///<inheritdoc/>
+        /// <inheritdoc/>
         private void OnEnable()
         {
             Block.Control.PlayHandler += OnPlayable;
         }
-        ///<inheritdoc/>
+        /// <inheritdoc/>
         private void OnDisable()
         {
             Block.Control.PlayHandler -= OnPlayable;
         }
-        ///<inheritdoc/>
+        /// <inheritdoc/>
         private void Start()
         {
             result = Result.none;
@@ -63,9 +61,7 @@ namespace TicTacToe.GamePlay.Main
             if (player == Block.Input.o)
                 AIInput();
         }
-        /// <summary>
-        /// Assignment of components and variables
-        /// </summary>
+        /// <inheritdoc/>
         [Button(nameof(ComponentsAssignment), SButtonEnableMode.Editor)]
         public void ComponentsAssignment()
         {
@@ -113,7 +109,10 @@ namespace TicTacToe.GamePlay.Main
             if (e.Data.Input == player)
                 AIInput();
         }
-
+        /// <summary>
+        /// Initiates the AI's turn after a specified delay.
+        /// </summary>
+        /// <param name="delay">The delay in seconds before the AI makes a move.</param>
         public void AIInput(float delay = 0f)
         {
             if (delay < 0f)
@@ -122,11 +121,18 @@ namespace TicTacToe.GamePlay.Main
             var routine = AIInput(data, delay);
             StartCoroutine(routine);
         }
-
+        /// <summary>
+        /// Coroutine for handling the AI's turn.
+        /// </summary>
+        /// <param name="board">The current state of the board.</param>
+        /// <param name="delay">The delay in seconds before the AI makes a move.</param>
+        /// <returns>An IEnumerator for the coroutine.</returns>
         public IEnumerator AIInput(Block.Data[] board, float delay)
         {
-            if (delay <= 0f) yield return new WaitForEndOfFrame();
-            else yield return new WaitForSeconds(delay);
+            if (delay <= 0f)
+                yield return new WaitForEndOfFrame();
+            else
+                yield return new WaitForSeconds(delay);
 
             var bestSlotIndex = ai.GetBestMove(board);
             if (bestSlotIndex == -1)
@@ -144,7 +150,13 @@ namespace TicTacToe.GamePlay.Main
         /// </summary>
         /// <remarks>Read only</remarks>
         public Block.Control[] Blocks => blocks;
+        /// <summary>
+        /// Gets the input type of the human player.
+        /// </summary>
         public Block.Input Player => player;
+        /// <summary>
+        /// Gets the current result of the game.
+        /// </summary>
         public Result Result => result;
     }
 }

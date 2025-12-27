@@ -9,8 +9,8 @@ namespace TicTacToe.GamePlay.Block
     [Serializable]
     public struct Data
     {
-        [SerializeField] private int index;
-        [SerializeField] private Input input;
+        [SerializeField] private int index; // The index of the block on the board.
+        [SerializeField] private Input input; //The input value (e.g., X or O) of the block.
         /// <summary>
         /// Block Data Constructor
         /// </summary>

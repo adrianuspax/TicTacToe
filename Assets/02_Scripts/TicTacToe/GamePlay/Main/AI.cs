@@ -1,14 +1,20 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace TicTacToe.GamePlay.Main
 {
-    using Random = UnityEngine.Random;
-
+    /// <summary>
+    /// Represents the Artificial Intelligence for the Tic-Tac-Toe game.
+    /// </summary>
     [Serializable]
     public class AI
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AI"/> class.
+        /// </summary>
+        /// <param name="player">The input type of the human player.</param>
         public AI(Block.Input player)
         {
             if (player == Block.Input.blank)
@@ -27,16 +33,20 @@ namespace TicTacToe.GamePlay.Main
             };
         }
 
-        [SerializeField] private Block.Input human;
-        [SerializeField] private Block.Input ai;
+        [SerializeField] private Block.Input human; //The input type representing the human player.
+        [SerializeField] private Block.Input ai; // The input type representing the AI player.
 
-        private readonly int[,] winConditions = new int[,]
+        private readonly int[,] winConditions = new int[,] // Defines the winning combinations on the Tic-Tac-Toe board.
         {
             {0, 1, 2}, {3, 4, 5}, {6, 7, 8}, // Lines
             {0, 3, 6}, {1, 4, 7}, {2, 5, 8}, // Columns
             {0, 4, 8}, {2, 4, 6}             // Diags
         };
-
+        /// <summary>
+        /// Checks the board for a winner or a draw.
+        /// </summary>
+        /// <param name="board">The current state of the board.</param>
+        /// <returns>The result of the game (win, lose, draw, or none).</returns>
         public Result CheckForWinner(Block.Data[] board)
         {
             var length = winConditions.GetLength(0);
@@ -60,7 +70,11 @@ namespace TicTacToe.GamePlay.Main
             else
                 return Result.draw;
         }
-
+        /// <summary>
+        /// Determines the best possible move for the AI.
+        /// </summary>
+        /// <param name="board">The current state of the board.</param>
+        /// <returns>The index of the best move.</returns>
         public int GetBestMove(Block.Data[] board)
         {
             var bestScore = int.MinValue;
@@ -93,9 +107,16 @@ namespace TicTacToe.GamePlay.Main
                 var randomIndex = Random.Range(0, bestMoves.Count); //new System.Random().Next(bestMoves.Count);
                 move = bestMoves[randomIndex];
             }
+
             return move;
         }
-
+        /// <summary>
+        /// The Minimax algorithm to find the best move.
+        /// </summary>
+        /// <param name="board">The current state of the board.</param>
+        /// <param name="depth">The current depth of the recursion.</param>
+        /// <param name="isMaximizing">True if the current move is for the maximizing player (AI), false otherwise.</param>
+        /// <returns>The score of the move.</returns>
         private int Minimax(Block.Data[] board, int depth, bool isMaximizing)
         {
             var score = Evaluate(board);
@@ -145,7 +166,11 @@ namespace TicTacToe.GamePlay.Main
                 return best;
             }
         }
-
+        /// <summary>
+        /// Evaluates the current board state and returns a score.
+        /// </summary>
+        /// <param name="board">The current state of the board.</param>
+        /// <returns>A score of 10 for an AI win, -10 for a human win, and 0 otherwise.</returns>
         private int Evaluate(Block.Data[] board)
         {
             for (var i = 0; i < winConditions.GetLength(0); i++)
@@ -166,7 +191,11 @@ namespace TicTacToe.GamePlay.Main
 
             return 0;
         }
-
+        /// <summary>
+        /// Checks if there are any moves left on the board.
+        /// </summary>
+        /// <param name="board">The current state of the board.</param>
+        /// <returns>True if there are available moves, false otherwise.</returns>
         private bool IsMovesLeft(Block.Data[] board)
         {
             for (var i = 0; i < board.Length; i++)

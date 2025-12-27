@@ -18,12 +18,12 @@ namespace TicTacToe.GamePlay.Block
         [Header(Header.READONLY, order = 0), HorizontalLine]
         [Space(-10, order = 1)]
         [Header(Header.components, order = 2)]
-        [SerializeField, ReadOnly] private Image image;
-        [SerializeField, ReadOnly] private Button button;
-        [SerializeField, ReadOnly] private TextMeshProUGUI tmp;
+        [SerializeField, ReadOnly] private Image image; // The image component of the block.
+        [SerializeField, ReadOnly] private Button button; //The button component of the block.
+        [SerializeField, ReadOnly] private TextMeshProUGUI tmp; //The TextMeshProUGUI component for displaying text on the block.
 
         [Header(Header.variables, order = 0)]
-        [SerializeField, ReadOnly] private Data data;
+        [SerializeField, ReadOnly] private Data data; //The data associated with this block.
         /// <summary>
         /// Method that can be called from the context menu in the Inpector for function tests
         /// </summary>
@@ -40,7 +40,7 @@ namespace TicTacToe.GamePlay.Block
         /// Play Handler invoked into <see cref="SetInput"/>
         /// </summary>
         public static event EventHandler<Args> PlayHandler;
-        private static Input _lastInput;
+        private static Input _lastInput; //Stores the last input made on any block.
         /// <inheritdoc/>
         private void Awake()
         {

@@ -188,10 +188,10 @@ RectTransform:
   - {fileID: 295806351}
   m_Father: {fileID: 462106382}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMin: {x: 0.1, y: 0.1}
+  m_AnchorMax: {x: 0.9, y: 0.9}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -256, y: -512}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &462106381
 GameObject:
@@ -248,7 +248,6 @@ MonoBehaviour:
   ai:
     human: 0
     ai: 0
-    result: 0
   blocks:
   - {fileID: 7185751998060659071}
   - {fileID: 7185751998060659070}
@@ -708,6 +707,7 @@ GameObject:
   - component: {fileID: 1867208930}
   - component: {fileID: 1867208932}
   - component: {fileID: 1867208931}
+  - component: {fileID: 1867208933}
   m_Layer: 5
   m_Name: imgBackground
   m_TagString: Untagged
@@ -729,8 +729,8 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 385479531}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.3}
-  m_AnchorMax: {x: 1, y: 0.7}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -772,6 +772,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1867208929}
   m_CullTransparentMesh: 1
+--- !u!114 &1867208933
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1867208929}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86710e43de46f6f4bac7c8e50813a599, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.AspectRatioFitter
+  m_AspectMode: 3
+  m_AspectRatio: 1
 --- !u!1 &1987607945
 GameObject:
   m_ObjectHideFlags: 0
@@ -1089,11 +1103,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6222607468662430077, guid: 8e5aa63415b75c54fa53c57b85078ef1, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6222607468662430077, guid: 8e5aa63415b75c54fa53c57b85078ef1, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0.7
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6222607468662430077, guid: 8e5aa63415b75c54fa53c57b85078ef1, type: 3}
       propertyPath: m_AnchorMin.x
@@ -1101,7 +1115,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6222607468662430077, guid: 8e5aa63415b75c54fa53c57b85078ef1, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0.3
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6222607468662430077, guid: 8e5aa63415b75c54fa53c57b85078ef1, type: 3}
       propertyPath: m_SizeDelta.x
