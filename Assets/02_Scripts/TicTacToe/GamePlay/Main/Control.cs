@@ -99,15 +99,43 @@ namespace TicTacToe.GamePlay.Main
             data[e.Data.Index] = e.Data;
 
             result = ai.CheckForWinner(data);
-            if (result != Result.none)
+
+            switch (result)
             {
-                Debug.Log($"Game is over! Result: {result}");
-                // TODO: Implement game over screen or logic
-                return;
+                case Result.draw:
+                    _draw();
+                    break;
+                case Result.youLose:
+                    _youLose();
+                    break;
+                case Result.youWin:
+                    _youWin();
+                    break;
+                default:
+                    _none();
+                    break;
             }
 
-            if (e.Data.Input == player)
-                AIInput();
+            void _draw()
+            {
+                SetBlocksInteractable(false);
+            }
+
+            void _youLose()
+            {
+                SetBlocksInteractable(false);
+            }
+
+            void _youWin()
+            {
+                SetBlocksInteractable(false);
+            }
+
+            void _none()
+            {
+                if (e.Data.Input == player)
+                    AIInput();
+            }
         }
         /// <summary>
         /// Initiates the AI's turn after a specified delay.
@@ -144,6 +172,12 @@ namespace TicTacToe.GamePlay.Main
             }
 
             blocks[bestSlotIndex].SetInput();
+        }
+
+        public void SetBlocksInteractable(bool value)
+        {
+            foreach (var block in blocks)
+                block.SetInteractable(value);
         }
         /// <summary>
         /// Return all blocks

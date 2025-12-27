@@ -98,6 +98,14 @@ namespace TicTacToe.GamePlay.Block
             }
         }
         /// <summary>
+        /// Sets the interactable state of the button, enabling or disabling user interaction
+        /// </summary>
+        /// <param name="value">A value indicating whether the button should be interactable.</param>
+        public void SetInteractable(bool value)
+        {
+            button.interactable = value;
+        }
+        /// <summary>
         /// Get the block data
         /// </summary>
         public Data Data => data;
