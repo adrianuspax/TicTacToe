@@ -9,7 +9,7 @@ namespace TicTacToe.GamePlay.Main
     /// Represents the Artificial Intelligence for the Tic-Tac-Toe game.
     /// </summary>
     [Serializable]
-    public class AI
+    public partial class AI
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="AI"/> class.
@@ -58,17 +58,21 @@ namespace TicTacToe.GamePlay.Main
                 var c = winConditions[i, 2];
 
                 if (board[a].Input != Block.Input.blank && board[a].Input == board[b].Input && board[b].Input == board[c].Input)
-                    if (board[a].Input == ai)
-                        return Result.youLose;
-                    else
-                        return Result.youWin;
+                {
+                    var result = new Result(Main.Result.youLose, a, b, c);
+
+                    if (board[a].Input != ai)
+                        result.main = Main.Result.youWin;
+
+                    return result;
+                }
             }
 
             var isMovesLeft = IsMovesLeft(board);
             if (isMovesLeft)
-                return Result.none;
+                return new() { main = Main.Result.none };
             else
-                return Result.draw;
+                return new() { main = Main.Result.draw };
         }
         /// <summary>
         /// Determines the best possible move for the AI.

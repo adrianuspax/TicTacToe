@@ -105,6 +105,11 @@ namespace TicTacToe.GamePlay.Block
         {
             button.interactable = value;
         }
+
+        public void SetColorText(Color color)
+        {
+            tmp.color = color;
+        }
         /// <summary>
         /// Get the block data
         /// </summary>

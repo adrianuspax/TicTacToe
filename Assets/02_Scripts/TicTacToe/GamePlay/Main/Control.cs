@@ -21,7 +21,7 @@ namespace TicTacToe.GamePlay.Main
         [Header(Header.READONLY, order = 0), HorizontalLine]
         [Space(-10, order = 1)]
         [Header(Header.variables, order = 2)]
-        [SerializeField, ReadOnly] private Result result; // The result of the game.
+        [SerializeField, ReadOnly] private AI.Result result; // The result of the game.
         [Space(-10, order = 0)]
         [Header(Header.components, order = 1)]
         [SerializeField, ReadOnly] private GridLayoutGroup gridLayoutGroup; // The grid layout group for the Tic-Tac-Toe board.
@@ -48,7 +48,7 @@ namespace TicTacToe.GamePlay.Main
         /// <inheritdoc/>
         private void Start()
         {
-            result = Result.none;
+            result = new();
 
             if (player == Block.Input.blank)
             {
@@ -97,44 +97,57 @@ namespace TicTacToe.GamePlay.Main
         public void OnPlayable(object sender, Block.Args e)
         {
             data[e.Data.Index] = e.Data;
+            var isEnd = ResultBehaviour();
+            if (isEnd)
+                return;
+            if (e.Data.Input == player)
+                AIInput();
+        }
 
+        private bool ResultBehaviour()
+        {
             result = ai.CheckForWinner(data);
 
-            switch (result)
+            return result.main switch
             {
-                case Result.draw:
-                    _draw();
-                    break;
-                case Result.youLose:
-                    _youLose();
-                    break;
-                case Result.youWin:
-                    _youWin();
-                    break;
-                default:
-                    _none();
-                    break;
-            }
+                Main.Result.draw => _draw(),
+                Main.Result.youLose => _youLose(),
+                Main.Result.youWin => _youWin(),
+                _ => _none(),
+            };
 
-            void _draw()
+            bool _draw()
             {
                 SetBlocksInteractable(false);
+                _beahviour();
+                return true;
             }
 
-            void _youLose()
+            bool _youLose()
             {
                 SetBlocksInteractable(false);
+                _beahviour();
+                return true;
             }
 
-            void _youWin()
+            bool _youWin()
             {
                 SetBlocksInteractable(false);
+                _beahviour();
+                return true;
             }
 
-            void _none()
+            bool _none()
             {
-                if (e.Data.Input == player)
-                    AIInput();
+                return false;
+            }
+
+            void _beahviour()
+            {
+                for (var i = 0; i < result.indexes.Length; i++)
+                {
+                    blocks[result.indexes[i]].SetColorText(Color.indianRed);
+                }
             }
         }
         /// <summary>
@@ -164,12 +177,7 @@ namespace TicTacToe.GamePlay.Main
 
             var bestSlotIndex = ai.GetBestMove(board);
             if (bestSlotIndex == -1)
-            {
-                // This condition is a safeguard. With the new logic in OnPlayable,
-                // a draw should be detected on the player's last move, and this coroutine
-                // would not have been called.
                 yield break;
-            }
 
             blocks[bestSlotIndex].SetInput();
         }
@@ -191,6 +199,6 @@ namespace TicTacToe.GamePlay.Main
         /// <summary>
         /// Gets the current result of the game.
         /// </summary>
-        public Result Result => result;
+        public AI.Result Result => result;
     }
 }
