@@ -5,6 +5,7 @@ using ASPax.Extensions;
 using ASPax.Utilities;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace TicTacToe.GamePlay.Main
@@ -12,7 +13,7 @@ namespace TicTacToe.GamePlay.Main
     /// <summary>
     /// Tic Tac Toe GamePlay Control Behaviour
     /// </summary>
-    public class Control : MonoBehaviour, Common.IAttributable
+    public class Control : MonoBehaviour
     {
         [Header(Header.MANAGEABLE, order = 0), HorizontalLine]
         [Space(-10, order = 1)]
@@ -39,11 +40,7 @@ namespace TicTacToe.GamePlay.Main
         private void OnEnable()
         {
             Block.Control.PlayHandler += OnPlayable;
-        }
-        /// <inheritdoc/>
-        private void OnDisable()
-        {
-            Block.Control.PlayHandler -= OnPlayable;
+            Input.Button.Restart.Handler += ResetGame;
         }
         /// <inheritdoc/>
         private void Start()
@@ -60,6 +57,12 @@ namespace TicTacToe.GamePlay.Main
 
             if (player == Block.Input.o)
                 AIInput();
+        }
+        /// <inheritdoc/>
+        private void OnDisable()
+        {
+            Block.Control.PlayHandler -= OnPlayable;
+            Input.Button.Restart.Handler -= ResetGame;
         }
         /// <inheritdoc/>
         [Button(nameof(ComponentsAssignment), SButtonEnableMode.Editor)]
@@ -119,7 +122,6 @@ namespace TicTacToe.GamePlay.Main
             bool _draw()
             {
                 SetBlocksInteractable(false);
-                _beahviour();
                 return true;
             }
 
@@ -186,6 +188,12 @@ namespace TicTacToe.GamePlay.Main
         {
             foreach (var block in blocks)
                 block.SetInteractable(value);
+        }
+
+        public void ResetGame()
+        {
+            var scene = SceneManager.GetActiveScene();
+            SceneManager.LoadScene(scene.name);
         }
         /// <summary>
         /// Return all blocks

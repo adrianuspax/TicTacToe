@@ -13,7 +13,7 @@ namespace TicTacToe.GamePlay.Block
     /// <summary>
     /// Tick Tac Toe Block Control Behaviour
     /// </summary>
-    public partial class Control : MonoBehaviour, Common.IAttributable
+    public partial class Control : MonoBehaviour
     {
         [Header(Header.READONLY, order = 0), HorizontalLine]
         [Space(-10, order = 1)]
@@ -109,6 +109,14 @@ namespace TicTacToe.GamePlay.Block
         public void SetColorText(Color color)
         {
             tmp.color = color;
+        }
+
+        public void ResetData()
+        {
+            data = new();
+            button.interactable = true;
+            tmp.text = string.Empty;
+            tmp.color = Color.black;
         }
         /// <summary>
         /// Get the block data

@@ -16,7 +16,7 @@ namespace TicTacToe.GamePlay.Block
         /// </summary>
         /// <param name="index">Index of block from Tic Tac Toe</param>
         /// <param name="input">Current Player Inputed in the block</param>
-        public Data(int index, Input input)
+        public Data(int index = -1, Input input = Input.blank)
         {
             if (index < 0 || index > 8)
                 index = -1;
