@@ -84,6 +84,7 @@
   <Project Path="ASPax.Attributes.Validator.csproj" />
   <Project Path="Unity.RenderPipeline.Universal.ShaderLibrary.csproj" />
   <Project Path="TicTacToe.GamePlay.Main.csproj" />
+  <Project Path="TicTacToe.Input.csproj" />
   <Project Path="Unity.2D.PixelPerfect.csproj" />
   <Project Path="TicTacToe.GamePlay.Block.csproj" />
   <Project Path="Unity.InputSystem.DocCodeSamples.csproj" />
@@ -96,6 +97,7 @@
   <Project Path="Unity.VisualScripting.DocCodeExamples.csproj" />
   <Project Path="Assembly-CSharp.csproj" />
   <Project Path="Unity.PlasticSCM.Editor.Entities.csproj" />
+  <Project Path="TicTacToe.Input.Toggle.csproj" />
   <Project Path="Unity.Rendering.LightTransport.Editor.csproj" />
   <Project Path="Unity.Collections.Editor.csproj" />
   <Project Path="Unity.RenderPipelines.Universal.Config.Runtime.csproj" />

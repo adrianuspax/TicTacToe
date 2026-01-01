@@ -11,14 +11,12 @@ namespace TicTacToe.Input.Button
         private void Start()
         {
             if (Handler != null)
-                button.onClick.AddListener(Handler);
+                Button.onClick.AddListener(Handler);
         }
 
         public void AddListener(UnityAction call)
         {
-            button.onClick.AddListener(call);
+            Button.onClick.AddListener(call);
         }
-
-        public Button Button => button;
     }
 }
