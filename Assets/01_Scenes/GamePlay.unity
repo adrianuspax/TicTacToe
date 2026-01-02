@@ -575,7 +575,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 877c2e5859dac2b4c8582b727fb2ebea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: 2
+  player: 0
   result:
     main: 0
     indexes: 
@@ -1074,7 +1074,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: New Text
+  m_text: 'First: AI'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

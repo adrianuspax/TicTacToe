@@ -1,10 +1,12 @@
+using ASPax.Extensions;
+using UnityEngine;
 using UnityEngine.Events;
 
-namespace TicTacToe.Input.Toggle
+namespace TicTacToe.UI.Toggle
 {
     using Toggle = UnityEngine.UI.Toggle;
 
-    public class Player : Default
+    public class Player : Input.Toggle.Default
     {
         public static event UnityAction<bool> Handler; // Alertar: Inserir antes do Start
         private const string ON = "First: You";
@@ -16,6 +18,9 @@ namespace TicTacToe.Input.Toggle
 
             if (Handler != null)
                 Toggle.onValueChanged.AddListener(Handler);
+
+            Toggle.onValueChanged.AddListener(Save);
+            Toggle.isOn = Load();
         }
 
         protected override void ToggleBehaviour(bool isOn)
@@ -27,6 +32,18 @@ namespace TicTacToe.Input.Toggle
         public void AddListener(UnityAction<bool> call)
         {
             Toggle.onValueChanged.AddListener(call);
+        }
+
+        public void Save(bool isOn)
+        {
+            var value = isOn.ToInt();
+            PlayerPrefs.SetInt(nameof(Player), value);
+        }
+
+        public bool Load()
+        {
+            var value = PlayerPrefs.GetInt(nameof(Player), 0);
+            return value.ToBool();
         }
     }
 }

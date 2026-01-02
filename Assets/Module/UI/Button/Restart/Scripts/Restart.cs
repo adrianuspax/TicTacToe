@@ -1,10 +1,10 @@
 using UnityEngine.Events;
 
-namespace TicTacToe.Input.Button
+namespace TicTacToe.UI.Button
 {
     using Button = UnityEngine.UI.Button;
 
-    public class Restart : Default
+    public class Restart : Input.Button.Default
     {
         public static event UnityAction Handler; // Alertar: Inserir antes do Start
         /// <inheritdoc/>

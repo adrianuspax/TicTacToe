@@ -40,7 +40,8 @@ namespace TicTacToe.GamePlay.Main
         private void OnEnable()
         {
             Block.Control.PlayHandler += OnPlayable;
-            Input.Button.Restart.Handler += ResetGame;
+            UI.Button.Restart.Handler += ResetGame;
+            UI.Toggle.Player.Handler += SetPlayer;
         }
         /// <inheritdoc/>
         private void Start()
@@ -62,7 +63,8 @@ namespace TicTacToe.GamePlay.Main
         private void OnDisable()
         {
             Block.Control.PlayHandler -= OnPlayable;
-            Input.Button.Restart.Handler -= ResetGame;
+            UI.Button.Restart.Handler -= ResetGame;
+            UI.Toggle.Player.Handler -= SetPlayer;
         }
         /// <inheritdoc/>
         [Button(nameof(ComponentsAssignment), SButtonEnableMode.Editor)]
@@ -194,6 +196,11 @@ namespace TicTacToe.GamePlay.Main
         {
             var scene = SceneManager.GetActiveScene();
             SceneManager.LoadScene(scene.name);
+        }
+
+        public void SetPlayer(bool isAI)
+        {
+            player = isAI ? Block.Input.x : Block.Input.o;
         }
         /// <summary>
         /// Return all blocks

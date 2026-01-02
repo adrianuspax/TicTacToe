@@ -1,0 +1,7 @@
+﻿[*.cs]
+
+# IDE0079: Remover a supressão desnecessária
+dotnet_diagnostic.IDE0079.severity = warning
+
+# IDE0130: O namespace não corresponde à estrutura da pasta
+dotnet_diagnostic.IDE0130.severity = silent
