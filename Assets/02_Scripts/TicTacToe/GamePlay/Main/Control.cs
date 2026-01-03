@@ -153,31 +153,11 @@ namespace TicTacToe.GamePlay.Main
         /// <summary>
         /// Initiates the AI's turn after a specified delay.
         /// </summary>
-        /// <param name="delay">The delay in seconds before the AI makes a move.</param>
-        public void SetInputAI(float delay = 0f)
+        public void SetInputAI()
         {
-            if (delay < 0f)
-                delay = 0f;
-
-            var routine = SetInputAI(data, delay);
-            StartCoroutine(routine);
-        }
-        /// <summary>
-        /// Coroutine for handling the AI's turn.
-        /// </summary>
-        /// <param name="board">The current state of the board.</param>
-        /// <param name="delay">The delay in seconds before the AI makes a move.</param>
-        /// <returns>An IEnumerator for the coroutine.</returns>
-        public IEnumerator SetInputAI(Block.Data[] board, float delay)
-        {
-            if (delay <= 0f)
-                yield return new WaitForEndOfFrame();
-            else
-                yield return new WaitForSeconds(delay);
-
-            var bestSlotIndex = ai.GetBestMove(board);
+            var bestSlotIndex = ai.GetBestMove(data);
             if (bestSlotIndex == -1)
-                yield break;
+                return;
 
             blocks[bestSlotIndex].SetInput();
         }
