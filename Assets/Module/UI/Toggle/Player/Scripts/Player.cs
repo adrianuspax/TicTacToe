@@ -15,18 +15,18 @@ namespace TicTacToe.UI.Toggle
         protected override void Start()
         {
             base.Start();
-
-            if (Handler != null)
-                Toggle.onValueChanged.AddListener(Handler);
-
             Toggle.onValueChanged.AddListener(Save);
-            Toggle.isOn = Load();
+            //Necessário para inicializar o toggle com o valor salvo (Já que a propriedade `isOn` não dispara se o valor default for o mesmo!)
+            var value = Load();
+            Toggle.SetIsOnWithoutNotify(value); // Não dispara os listeners
+            Toggle.onValueChanged.Invoke(value); // Dispara os listeners manualmente
         }
 
-        protected override void ToggleBehaviour(bool isOn)
+        protected override void Behaviour(bool isOn)
         {
-            base.ToggleBehaviour(isOn);
+            base.Behaviour(isOn);
             tmps[0].text = isOn ? ON : OFF;
+            Handler?.Invoke(isOn);
         }
 
         public void AddListener(UnityAction<bool> call)
@@ -45,5 +45,7 @@ namespace TicTacToe.UI.Toggle
             var value = PlayerPrefs.GetInt(nameof(Player), 0);
             return value.ToBool();
         }
+
+        public bool IsOn => Toggle.isOn;
     }
 }

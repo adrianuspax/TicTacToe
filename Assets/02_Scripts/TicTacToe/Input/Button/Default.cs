@@ -6,6 +6,16 @@ namespace TicTacToe.Input.Button
     /// </summary>
     public class Default : Input.Default
     {
+        protected virtual void Start()
+        {
+            Button.onClick.AddListener(Behaviour);
+        }
+
+        protected virtual void Behaviour()
+        {
+            return;
+        }
+
         protected Button Button => selectable as Button;
     }
 }

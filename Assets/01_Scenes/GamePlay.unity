@@ -583,6 +583,8 @@ MonoBehaviour:
   ai:
     human: 0
     ai: 0
+  restartButton: {fileID: 523568493}
+  playerToggle: {fileID: 2005413253}
   blocks:
   - {fileID: 7185751998060659071}
   - {fileID: 7185751998060659070}
@@ -1074,7 +1076,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'First: AI'
+  m_text: 'Unue: AI'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

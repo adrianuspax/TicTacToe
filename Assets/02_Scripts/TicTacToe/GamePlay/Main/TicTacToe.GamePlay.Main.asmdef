@@ -8,9 +8,11 @@
         "GUID:ffd3792f84cbf8a4e89eec7802c4c6c4",
         "GUID:2591a98a6b532a94ab3f838e90c1851c",
         "GUID:6771d669e2dc5584496e9b1094a1fb34",
-        "GUID:e622d29aa10100543aad9a7b8d049ee5",
         "GUID:7e4fd7a0d35921e4397fe6f525982419",
-        "GUID:936b9ee84279ab3458704229e10c98ec"
+        "GUID:936b9ee84279ab3458704229e10c98ec",
+        "GUID:aa8db8ea0f4ecf24fb63f57fd372ae73",
+        "GUID:e622d29aa10100543aad9a7b8d049ee5",
+        "GUID:63c4a89821437de49b1d114d2dfb251d"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

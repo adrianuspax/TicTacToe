@@ -39,7 +39,7 @@ namespace TicTacToe.GamePlay.Block
         /// <summary>
         /// Play Handler invoked into <see cref="SetInput"/>
         /// </summary>
-        public static event EventHandler<Args> PlayHandler;
+        public static event EventHandler<Args> Handler;
         private static Input _lastInput; //Stores the last input made on any block.
         /// <inheritdoc/>
         private void Awake()
@@ -74,7 +74,7 @@ namespace TicTacToe.GamePlay.Block
             tmp.text = _getText();
             data = new(data.Index, _lastInput);
             var e = new Args(data);
-            PlayHandler?.Invoke(this, e);
+            Handler?.Invoke(this, e);
             return;
             // Update the last input
             Input _updateInputted()

@@ -5,6 +5,7 @@ using ASPax.Extensions;
 using ASPax.Utilities;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -15,13 +16,10 @@ namespace TicTacToe.GamePlay.Main
     /// </summary>
     public class Control : MonoBehaviour
     {
-        [Header(Header.MANAGEABLE, order = 0), HorizontalLine]
-        [Space(-10, order = 1)]
-        [Header(Header.variables, order = 2)]
-        [SerializeField] private Block.Input player;
         [Header(Header.READONLY, order = 0), HorizontalLine]
         [Space(-10, order = 1)]
         [Header(Header.variables, order = 2)]
+        [SerializeField, ReadOnly] private Block.Input player;
         [SerializeField, ReadOnly] private AI.Result result; // The result of the game.
         [Space(-10, order = 0)]
         [Header(Header.components, order = 1)]
@@ -29,6 +27,8 @@ namespace TicTacToe.GamePlay.Main
 
         [Header(Header.scripts, order = 0)]
         [SerializeField, ReadOnly] private AI ai; // The AI instance for the game.
+        [SerializeField, ReadOnly] private UI.Button.Restart restartButton; // The restart button for the game.
+        [SerializeField, ReadOnly] private UI.Toggle.Player playerToggle; // The player toggle for the game.
         [SerializeField, NonReorderable, ReadOnly] private Block.Control[] blocks; // An array of block controls representing the cells of the board.
         [SerializeField, NonReorderable, ReadOnly] private Block.Data[] data; // An array of block data representing the state of the board.
         /// <inheritdoc/>
@@ -39,32 +39,23 @@ namespace TicTacToe.GamePlay.Main
         /// <inheritdoc/>
         private void OnEnable()
         {
-            Block.Control.PlayHandler += OnPlayable;
-            UI.Button.Restart.Handler += ResetGame;
-            UI.Toggle.Player.Handler += SetPlayer;
+            Block.Control.Handler += OnPlayable;
         }
         /// <inheritdoc/>
         private void Start()
         {
+            var routine = InstantiateSafetyAI(value => ai = value);
             result = new();
-
-            if (player == Block.Input.blank)
-            {
-                player = Block.Input.x;
-                Debug.LogWarning("Player cannot be blank! Player will be X!");
-            }
-
-            ai = new(player);
-
-            if (player == Block.Input.o)
-                AIInput();
+            restartButton.AddListener(ResetGame);
+            playerToggle.AddListener(SetPlayer);
+            StartCoroutine(routine);
+            routine = FirstMovement();
+            StartCoroutine(routine);
         }
         /// <inheritdoc/>
         private void OnDisable()
         {
-            Block.Control.PlayHandler -= OnPlayable;
-            UI.Button.Restart.Handler -= ResetGame;
-            UI.Toggle.Player.Handler -= SetPlayer;
+            Block.Control.Handler -= OnPlayable;
         }
         /// <inheritdoc/>
         [Button(nameof(ComponentsAssignment), SButtonEnableMode.Editor)]
@@ -92,9 +83,14 @@ namespace TicTacToe.GamePlay.Main
                     data[block.Index] = block.Data;
                 }
             }
+
+            if (restartButton == null)
+                restartButton = FindAnyObjectByType<UI.Button.Restart>(FindObjectsInactive.Include);
+            if (playerToggle == null)
+                playerToggle = FindAnyObjectByType<UI.Toggle.Player>(FindObjectsInactive.Include);
         }
         /// <summary>
-        /// Function used to be called when <see cref="Block.Control.PlayHandler"/> is invoked.
+        /// Function used to be called when <see cref="Block.Control.Handler"/> is invoked.
         /// </summary>
         /// <param name="sender">Sender Object<br/>Must receive <see cref="Block.Control"/> as object</param>
         /// <param name="e">Arguments to Handler</param>
@@ -106,7 +102,7 @@ namespace TicTacToe.GamePlay.Main
             if (isEnd)
                 return;
             if (e.Data.Input == player)
-                AIInput();
+                SetInputAI();
         }
 
         private bool ResultBehaviour()
@@ -158,12 +154,12 @@ namespace TicTacToe.GamePlay.Main
         /// Initiates the AI's turn after a specified delay.
         /// </summary>
         /// <param name="delay">The delay in seconds before the AI makes a move.</param>
-        public void AIInput(float delay = 0f)
+        public void SetInputAI(float delay = 0f)
         {
             if (delay < 0f)
                 delay = 0f;
 
-            var routine = AIInput(data, delay);
+            var routine = SetInputAI(data, delay);
             StartCoroutine(routine);
         }
         /// <summary>
@@ -172,7 +168,7 @@ namespace TicTacToe.GamePlay.Main
         /// <param name="board">The current state of the board.</param>
         /// <param name="delay">The delay in seconds before the AI makes a move.</param>
         /// <returns>An IEnumerator for the coroutine.</returns>
-        public IEnumerator AIInput(Block.Data[] board, float delay)
+        public IEnumerator SetInputAI(Block.Data[] board, float delay)
         {
             if (delay <= 0f)
                 yield return new WaitForEndOfFrame();
@@ -198,9 +194,23 @@ namespace TicTacToe.GamePlay.Main
             SceneManager.LoadScene(scene.name);
         }
 
-        public void SetPlayer(bool isAI)
+        public void SetPlayer(bool isHuman)
         {
-            player = isAI ? Block.Input.x : Block.Input.o;
+            player = isHuman ? Block.Input.x : Block.Input.o;
+        }
+
+        private IEnumerator InstantiateSafetyAI(UnityAction<AI> call)
+        {
+            yield return new WaitUntil(() => playerToggle.didStart);
+            var value = new AI(player);
+            call?.Invoke(value);
+        }
+
+        private IEnumerator FirstMovement()
+        {
+            yield return new WaitWhile(() => player == Block.Input.blank);
+            if (player == Block.Input.o)
+                SetInputAI();
         }
         /// <summary>
         /// Return all blocks

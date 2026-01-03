@@ -18,10 +18,10 @@ namespace TicTacToe.Input.Toggle
 
         protected virtual void Start()
         {
-            Toggle.onValueChanged.AddListener(ToggleBehaviour);
+            Toggle.onValueChanged.AddListener(Behaviour);
         }
 
-        protected virtual void ToggleBehaviour(bool isOn)
+        protected virtual void Behaviour(bool isOn)
         {
             if (isOn)
             {
