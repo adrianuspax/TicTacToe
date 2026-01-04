@@ -32,6 +32,7 @@ namespace TicTacToe.GamePlay.Main
         [SerializeField, NonReorderable, ReadOnly] private Block.Data[] data; // An array of block data representing the state of the board.
         [Space(20)]
         [SerializeField, ReadOnly] private AI ai; // The AI instance for the game.
+        public GameObject panel;
         /// <inheritdoc/>
         private void Awake()
         {
@@ -41,6 +42,7 @@ namespace TicTacToe.GamePlay.Main
         private void OnEnable()
         {
             Block.Control.Handler += OnPlayable;
+            AI.NotifyHandler += OnNotify;
         }
         /// <inheritdoc/>
         private void Start()
@@ -57,6 +59,7 @@ namespace TicTacToe.GamePlay.Main
         private void OnDisable()
         {
             Block.Control.Handler -= OnPlayable;
+            AI.NotifyHandler -= OnNotify;
         }
         /// <inheritdoc/>
         [Button(nameof(ComponentsAssignment), SButtonEnableMode.Editor)]
@@ -85,10 +88,8 @@ namespace TicTacToe.GamePlay.Main
                 }
             }
 
-            if (restartButton == null)
-                restartButton = FindAnyObjectByType<UI.Button.Restart>(FindObjectsInactive.Include);
-            if (playerToggle == null)
-                playerToggle = FindAnyObjectByType<UI.Toggle.Player>(FindObjectsInactive.Include);
+            this.GetComponentInChildrenIfNull(ref restartButton);
+            this.GetComponentInChildrenIfNull(ref playerToggle);
         }
         /// <summary>
         /// Function used to be called when <see cref="Block.Control.Handler"/> is invoked.
@@ -198,6 +199,12 @@ namespace TicTacToe.GamePlay.Main
                 blocks[value].SetInput();
             }
         }
+
+        private void OnNotify()
+        {
+            panel.SetActive(true);
+        }
+
         /// <summary>
         /// Return all blocks
         /// </summary>

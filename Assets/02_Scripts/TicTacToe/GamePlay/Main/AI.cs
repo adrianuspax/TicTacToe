@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using Random = UnityEngine.Random;
 
 namespace TicTacToe.GamePlay.Main
@@ -37,7 +38,7 @@ namespace TicTacToe.GamePlay.Main
         [SerializeField] private Block.Input ai; // The input type representing the AI player.
         [SerializeField] private int move;
         [SerializeField, NonReorderable] private List<int> bestMoves;
-
+        public static event UnityAction NotifyHandler;
         private readonly int[,] winConditions = new int[,] // Defines the winning combinations on the Tic-Tac-Toe board.
         {
             {0, 1, 2}, {3, 4, 5}, {6, 7, 8}, // Lines
@@ -105,6 +106,9 @@ namespace TicTacToe.GamePlay.Main
                     }
                 }
             }
+
+            if (bestScore > 0)
+                NotifyHandler?.Invoke();
 
             move = -1;
 

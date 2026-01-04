@@ -51,6 +51,9 @@ TagManager:
   - name: HUD
     uniqueID: 3768197831
     locked: 0
+  - name: Panel
+    uniqueID: 4291815649
+    locked: 0
   - name: Buttons
     uniqueID: 1373816161
     locked: 0
