@@ -96,6 +96,7 @@
   <Project Path="Unity.2D.Sprite.AIIntegration.Editor.csproj" />
   <Project Path="Unity.RenderPipelines.Core.Editor.Shared.csproj" />
   <Project Path="Assembly-CSharp-Editor.csproj" />
+  <Project Path="TicTacToe.Safety.csproj" />
   <Project Path="Unity.VisualScripting.DocCodeExamples.csproj" />
   <Project Path="Assembly-CSharp.csproj" />
   <Project Path="Unity.PlasticSCM.Editor.Entities.csproj" />

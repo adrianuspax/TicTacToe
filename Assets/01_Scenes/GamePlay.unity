@@ -996,6 +996,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 638523014}
+  - component: {fileID: 638523015}
   m_Layer: 0
   m_Name: MANAGEMENT
   m_TagString: Management
@@ -1019,6 +1020,19 @@ Transform:
   - {fileID: 1987607948}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &638523015
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 638523013}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02f937b42f6ea27419788ba693259a7e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: TicTacToe.Safety::TicTacToe.Safety.Debug
+  isActive: 1
 --- !u!1 &831441501
 GameObject:
   m_ObjectHideFlags: 0

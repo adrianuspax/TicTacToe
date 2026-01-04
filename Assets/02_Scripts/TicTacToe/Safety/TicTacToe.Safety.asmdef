@@ -1,0 +1,14 @@
+{
+    "name": "TicTacToe.Safety",
+    "rootNamespace": "TicTacToe.Safety",
+    "references": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

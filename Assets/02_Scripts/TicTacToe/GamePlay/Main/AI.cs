@@ -1,7 +1,5 @@
 using System;
-using System.Collections.Generic;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 namespace TicTacToe.GamePlay.Main
 {
@@ -60,7 +58,6 @@ namespace TicTacToe.GamePlay.Main
                 if (board[a].Input != Block.Input.blank && board[a].Input == board[b].Input && board[b].Input == board[c].Input)
                 {
                     var result = new Result(Main.Result.youLose, a, b, c);
-
                     if (board[a].Input != ai)
                         result.main = Main.Result.youWin;
 
@@ -82,7 +79,7 @@ namespace TicTacToe.GamePlay.Main
         public int GetBestMove(Block.Data[] board)
         {
             var bestScore = int.MinValue;
-            var bestMoves = new List<int>();
+            var moveIndex = -1;
 
             for (var i = 0; i < board.Length; i++)
             {
@@ -95,24 +92,12 @@ namespace TicTacToe.GamePlay.Main
                     if (score > bestScore)
                     {
                         bestScore = score;
-                        bestMoves.Clear();
-                        bestMoves.Add(i);
-                    }
-                    else if (score == bestScore)
-                    {
-                        bestMoves.Add(i);
+                        moveIndex = i;
                     }
                 }
             }
 
-            var move = -1;
-            if (bestMoves.Count > 0)
-            {
-                var randomIndex = Random.Range(0, bestMoves.Count); //new System.Random().Next(bestMoves.Count);
-                move = bestMoves[randomIndex];
-            }
-
-            return move;
+            return moveIndex;
         }
         /// <summary>
         /// The Minimax algorithm to find the best move.
@@ -123,21 +108,18 @@ namespace TicTacToe.GamePlay.Main
         /// <returns>The score of the move.</returns>
         private int Minimax(Block.Data[] board, int depth, bool isMaximizing)
         {
+            int best;
             var score = Evaluate(board);
-
             if (score == 10)
                 return score - depth;
-
             if (score == -10)
                 return score + depth;
-
             var isMovesLeft = IsMovesLeft(board);
             if (!isMovesLeft)
                 return 0;
-
             if (isMaximizing)
             {
-                var best = int.MinValue;
+                best = int.MinValue;
 
                 for (var i = 0; i < board.Length; i++)
                 {
@@ -149,12 +131,10 @@ namespace TicTacToe.GamePlay.Main
                         board[i].Input = Block.Input.blank;
                     }
                 }
-
-                return best;
             }
             else
             {
-                var best = int.MaxValue;
+                best = int.MaxValue;
 
                 for (var i = 0; i < board.Length; i++)
                 {
@@ -166,9 +146,9 @@ namespace TicTacToe.GamePlay.Main
                         board[i].Input = Block.Input.blank;
                     }
                 }
-
-                return best;
             }
+
+            return best;
         }
         /// <summary>
         /// Evaluates the current board state and returns a score.
