@@ -26,11 +26,12 @@ namespace TicTacToe.GamePlay.Main
         [SerializeField, ReadOnly] private GridLayoutGroup gridLayoutGroup; // The grid layout group for the Tic-Tac-Toe board.
 
         [Header(Header.scripts, order = 0)]
-        [SerializeField, ReadOnly] private AI ai; // The AI instance for the game.
         [SerializeField, ReadOnly] private UI.Button.Restart restartButton; // The restart button for the game.
         [SerializeField, ReadOnly] private UI.Toggle.Player playerToggle; // The player toggle for the game.
         [SerializeField, NonReorderable, ReadOnly] private Block.Control[] blocks; // An array of block controls representing the cells of the board.
         [SerializeField, NonReorderable, ReadOnly] private Block.Data[] data; // An array of block data representing the state of the board.
+        [Space(20)]
+        [SerializeField, ReadOnly] private AI ai; // The AI instance for the game.
         /// <inheritdoc/>
         private void Awake()
         {

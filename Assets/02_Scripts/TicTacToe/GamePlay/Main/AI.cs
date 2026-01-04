@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace TicTacToe.GamePlay.Main
 {
@@ -33,6 +35,8 @@ namespace TicTacToe.GamePlay.Main
 
         [SerializeField] private Block.Input human; //The input type representing the human player.
         [SerializeField] private Block.Input ai; // The input type representing the AI player.
+        [SerializeField] private int move;
+        [SerializeField, NonReorderable] private List<int> bestMoves;
 
         private readonly int[,] winConditions = new int[,] // Defines the winning combinations on the Tic-Tac-Toe board.
         {
@@ -79,7 +83,7 @@ namespace TicTacToe.GamePlay.Main
         public int GetBestMove(Block.Data[] board)
         {
             var bestScore = int.MinValue;
-            var moveIndex = -1;
+            bestMoves = new List<int>();
 
             for (var i = 0; i < board.Length; i++)
             {
@@ -92,12 +96,25 @@ namespace TicTacToe.GamePlay.Main
                     if (score > bestScore)
                     {
                         bestScore = score;
-                        moveIndex = i;
+                        bestMoves.Clear();
+                        bestMoves.Add(i);
+                    }
+                    else if (score == bestScore)
+                    {
+                        bestMoves.Add(i);
                     }
                 }
             }
 
-            return moveIndex;
+            move = -1;
+
+            if (bestMoves.Count > 0)
+            {
+                var randomIndex = Random.Range(0, bestMoves.Count);
+                move = bestMoves[randomIndex];
+            }
+
+            return move;
         }
         /// <summary>
         /// The Minimax algorithm to find the best move.
