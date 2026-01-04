@@ -190,7 +190,12 @@ namespace TicTacToe.GamePlay.Main
         {
             yield return new WaitWhile(() => player == Block.Input.blank);
             if (player == Block.Input.o)
-                SetInputAI();
+            {
+                var values = new int[] { 0, 2, 6, 8 };
+                var index = Random.Range(0, values.Length);
+                var value = values[index];
+                blocks[value].SetInput();
+            }
         }
         /// <summary>
         /// Return all blocks

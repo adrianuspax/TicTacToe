@@ -88,7 +88,7 @@ namespace TicTacToe.GamePlay.Main
                     board[i].Input = ai;
                     var score = Minimax(board, 0, false);
                     board[i].Input = Block.Input.blank;
-
+                    Safety.Debug.Log("AI Move Index: " + i + " Score: " + score);
                     if (score > bestScore)
                     {
                         bestScore = score;
