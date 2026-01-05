@@ -202,9 +202,17 @@ namespace TicTacToe.GamePlay.Main
 
         private void OnNotify()
         {
-            panel.SetActive(true);
-        }
+            var routine = _routine();
+            StartCoroutine(routine);
+            AI.NotifyHandler -= OnNotify;
 
+            IEnumerator _routine()
+            {
+                yield return new WaitForSeconds(0.75f);
+                if (result.main == Main.Result.none)
+                    panel.SetActive(true);
+            }
+        }
         /// <summary>
         /// Return all blocks
         /// </summary>
